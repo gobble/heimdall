@@ -1,0 +1,23 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/heimdall
+    docker:
+      - image: circleci/ruby:2.4.1-node
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+            - gem-cache-{{ checksum "Gemfile.lock" }}
+            - gem-cache
+            
+      - run: bundle install --path vendor/bundle
+      
+      - save_cache:
+          key: gem-cache-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+
+      - run: bundle exec rspec
