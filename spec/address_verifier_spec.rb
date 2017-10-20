@@ -69,7 +69,8 @@ RSpec.describe Heimdall::AddressVerifier do
     context "when the address is not found" do
       it "assigns a base error" do
         FakeLob.raise_address_not_found
-        address = FakeAddress.new
+        address = build(:fake_address)
+        allow(address).to receive(:verifiable?).and_return(true)
         verification_service = Heimdall::AddressVerifier.new(address)
         errors = { base: [] }
         allow(address).to receive(:errors).and_return(errors)

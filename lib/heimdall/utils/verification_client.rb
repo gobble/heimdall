@@ -5,7 +5,7 @@ module Heimdall
       def verify(address)
         verify_address(address)
       rescue Lob::InvalidRequestError => e
-        Rails.logger.error(e.message)
+        handle_error(e)
       end
 
       protected
@@ -25,6 +25,11 @@ module Heimdall
           api_key: ENV["LOB_API_KEY"],
           api_version: ENV["LOB_API_VERSION"]
         )
+      end
+
+      def handle_error(e)
+        Heimdall.log.info(e.message)
+        nil
       end
 
     end
