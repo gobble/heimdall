@@ -19,8 +19,10 @@ module Heimdall
 
     def verify
       @last_response = verify_address
-      handle_last_response
-      standardize_address
+      if last_response.present?
+        handle_last_response
+        standardize_address
+      end
     end
 
     def standardize_address
