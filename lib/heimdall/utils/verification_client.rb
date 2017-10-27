@@ -22,8 +22,8 @@ module Heimdall
 
       def lob_client
         @client ||= Lob::Client.new(
-          api_key: ENV["LOB_API_KEY"],
-          api_version: ENV["LOB_API_VERSION"]
+          api_key: ENV.fetch("LOB_API_KEY", ""),
+          api_version: ENV.fetch("LOB_API_VERSION", "")
         )
       end
 

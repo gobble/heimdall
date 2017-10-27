@@ -1,16 +1,17 @@
 module Heimdall
   class AddressVerifier
 
+    delegate :line1, :city, :state, :zip_code, to: :address
+
     def initialize(address)
       @address = address
     end
 
     def call
-      if address.verifiable?
-        verify
-      else
-        add_error(errors.incomplete_address_error)
-      end
+      verify
+    rescue AddressError => e
+      add_error(e)
+      false
     end
 
     protected
@@ -36,7 +37,7 @@ module Heimdall
         street2: new_values["address_line2"],
         city: new_values["address_city"],
         state: new_values["address_state"],
-        zip: new_values["address_zip"],
+        zip_code: new_values["address_zip"],
         verified: true
       )
     end
@@ -47,7 +48,7 @@ module Heimdall
 
     def handle_last_response
       if last_response.has_key?("message")
-        add_error(errors.missing_information_error)
+        fail Heimdall::MissingInformationError
       else
         @success = true
       end
@@ -56,22 +57,17 @@ module Heimdall
     def verify_address
       response = verification_client.verify(address)
       unless response
-        @success = false
-        add_error(errors.unverifiable_address_error)
+        fail Heimdall::UnverifiableAddressError
       end
       response
-    end
-
-    def add_error(message)
-      address.errors[:base] << message
     end
 
     def verification_client
       @client ||= Utils::VerificationClient.new
     end
 
-    def errors
-      @_errors ||= Heimdall::Utils::Errors.new
+    def add_error(error)
+      address.errors[error.attribute] << error.message
     end
 
   end
