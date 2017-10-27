@@ -39,7 +39,7 @@ class FakeLob
   protected
 
   def partial_match_response
-    { "message" => errors.missing_information_error }
+    { "message" => "address is missing information" }
   end
 
   def address_not_found_response
@@ -54,10 +54,6 @@ class FakeLob
   def initialize_class_variables
     @@partial_match ||= false
     @@address_not_found ||= false
-  end
-
-  def errors
-    @_errors ||= Heimdall::Utils::Errors.new
   end
 
 end
