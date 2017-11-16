@@ -28,16 +28,16 @@ module Heimdall
 
     def standardize_address
       return unless successful?
-      update_address(last_response["address"])
+      update_address(last_response)
     end
 
     def update_address(new_values)
       address.assign_attributes(
-        street1: new_values["address_line1"],
-        street2: new_values["address_line2"],
-        city: new_values["address_city"],
-        state: new_values["address_state"],
-        zip_code: new_values["address_zip"],
+        street1: new_values["primary_line"],
+        street2: new_values["secondary_line"],
+        city: new_values["components"]["city"],
+        state: new_values["components"]["state"],
+        zip_code: new_values["components"]["zip_code"],
         verified: true
       )
     end
@@ -47,11 +47,21 @@ module Heimdall
     end
 
     def handle_last_response
-      if last_response.has_key?("message")
+      if missing_information?
         fail Heimdall::MissingInformationError
+      elsif no_match_found?
+        fail Heimdall::UnverifiableAddressError
       else
         @success = true
       end
+    end
+
+    def no_match_found?
+      last_response["deliverability"] == "no_match"
+    end
+
+    def missing_information?
+      last_response["deliverability"] == "deliverable_extra_secondary"
     end
 
     def verify_address

@@ -11,12 +11,12 @@ module Heimdall
       protected
 
       def verify_address(address)
-        lob_client.addresses.verify(
-          address_line1: address.line1,
-          address_line2: address.line2,
-          address_city: address.city,
-          address_state: address.state,
-          address_zip: address.zip_code
+        lob_client.us_verifications.verify(
+          primary_line: address.line1,
+          secondary_line: address.line2,
+          city: address.city,
+          state: address.state,
+          zip_code: address.zip_code
         )
       end
 

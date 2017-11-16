@@ -17,6 +17,10 @@ module Heimdall
       @logger ||= initialize_logger
     end
 
+    def verification_url
+      "https://#{ENV['LOB_API_KEY']}:@api.lob.com/v1/us_verifications"
+    end
+
     private
 
     def initialize_logger

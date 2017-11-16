@@ -4,7 +4,7 @@ class FakeLob
 
   def initialize(api_key: nil, api_version: nil); end
 
-  def addresses
+  def us_verifications
     self
   end
 
@@ -13,13 +13,14 @@ class FakeLob
     return partial_match_response if @@partial_match
     return address_not_found_response if @@address_not_found
     {
-      "address" => {
-        "address_line1" => options[:address_line1],
-        "address_line2" => options[:address_line2],
-        "address_city" => options[:address_city],
-        "address_state" => options[:address_state],
-        "address_zip" => options[:address_zip],
-      },
+      "primary_line" => options[:primary_line],
+      "secondary_line" => options[:secondary_line],
+      "deliverability" => "deliverable",
+      "components" => {
+        "city" => options[:city],
+        "state" => options[:state],
+        "zip_code" => options[:zip_code]
+      }
     }
   end
 
@@ -39,7 +40,7 @@ class FakeLob
   protected
 
   def partial_match_response
-    { "message" => "address is missing information" }
+    { "deliverability" => "deliverable_extra_secondary" }
   end
 
   def address_not_found_response
