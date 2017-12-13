@@ -24,8 +24,9 @@ class FakeLob
     }
   end
 
-  def self.return_partial_match
+  def self.return_partial_match(deliverability_status:)
     @@partial_match = true
+    @@deliverability_status = deliverability_status
   end
 
   def self.raise_address_not_found
@@ -35,12 +36,13 @@ class FakeLob
   def self.clear
     @@partial_match = false
     @@address_not_found = false
+    @@deliverability_status = ""
   end
 
   protected
 
   def partial_match_response
-    { "deliverability" => "deliverable_extra_secondary" }
+    { "deliverability" => @@deliverability_status }
   end
 
   def address_not_found_response
