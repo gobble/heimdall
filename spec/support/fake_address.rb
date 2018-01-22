@@ -1,5 +1,6 @@
 class FakeAddress
-  attr_accessor :address, :street1, :street2, :city, :zip, :state, :verified
+  attr_accessor :address, :street1, :street2, :city, :zip, :state,
+                :commercial, :verified
 
   alias_attribute :line1, :street1
   alias_attribute :line2, :street2

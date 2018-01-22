@@ -1,16 +1,19 @@
 module Heimdall
   class Address
     include Comparable
-    
-    attr_accessor :line1, :line2, :city, :state, :zip_code, :country
 
-    def initialize(line1:, line2: "", city:, state:, zip_code:, country: "USA")
+    attr_accessor :line1, :line2, :city, :state, :zip_code, :country,
+                  :commercial
+
+    def initialize(line1:, line2: "", city:, state:,
+                   zip_code:, country: "USA", commercial: false)
       @line1 = line1
       @line2 = line2
       @city = city
       @state = state
       @zip_code = zip_code
       @country = country
+      @commercial = commercial
     end
 
     def <=>(an_other)

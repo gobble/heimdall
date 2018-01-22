@@ -1,7 +1,7 @@
 require "spec_helper"
 
 RSpec.describe Heimdall::Address do
-  
+
   describe "#for_comparison" do
     it "returns a comparable version of the address" do
       address = Heimdall::Address.new(line1: "939 Industrial Ave",
