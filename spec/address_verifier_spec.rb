@@ -23,6 +23,34 @@ RSpec.describe Heimdall::AddressVerifier do
       expect(address).to be_verified
     end
 
+    context "for a commercial address" do
+      it "sets the commercial field to true" do
+        FakeLob.return_complete_match(
+          address_type: "commercial"
+        )
+        address = build(:fake_address)
+        verification_service = Heimdall::AddressVerifier.new(address)
+
+        verification_service.call
+
+        expect(address.commercial).to be_truthy
+      end
+    end
+
+    context "for a non-commercial address" do
+      it "sets the commercial field to false" do
+        FakeLob.return_complete_match(
+          address_type: "residential"
+        )
+        address = build(:fake_address)
+        verification_service = Heimdall::AddressVerifier.new(address)
+
+        verification_service.call
+
+        expect(address.commercial).to be_falsey
+      end
+    end
+
     context "when the address is missing information" do
       context "and deliverability status is deliverable_missing_secondary" do
         it "populates the street2 attribute in the errors hash" do

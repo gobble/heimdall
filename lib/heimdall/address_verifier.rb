@@ -38,6 +38,7 @@ module Heimdall
         city: new_values["components"]["city"],
         state: new_values["components"]["state"],
         zip_code: new_values["components"]["zip_code"],
+        commercial: commercial_address?,
         verified: true
       )
     end
@@ -54,6 +55,10 @@ module Heimdall
       else
         @success = true
       end
+    end
+
+    def commercial_address?
+      last_response["components"]["address_type"] == "commercial"
     end
 
     def no_match_found?

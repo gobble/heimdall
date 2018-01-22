@@ -19,9 +19,14 @@ class FakeLob
       "components" => {
         "city" => options[:city],
         "state" => options[:state],
-        "zip_code" => options[:zip_code]
+        "zip_code" => options[:zip_code],
+        "address_type" => @@address_type
       }
     }
+  end
+
+  def self.return_complete_match(address_type:)
+    @@address_type = address_type
   end
 
   def self.return_partial_match(deliverability_status:)
@@ -57,6 +62,7 @@ class FakeLob
   def initialize_class_variables
     @@partial_match ||= false
     @@address_not_found ||= false
+    @@address_type ||= "residential"
   end
 
 end
