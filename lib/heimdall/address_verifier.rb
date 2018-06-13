@@ -66,8 +66,7 @@ module Heimdall
     end
 
     def missing_information?
-      last_response["deliverability"] == "deliverable_extra_secondary" ||
-        last_response["deliverability"] == "deliverable_missing_secondary"
+      last_response["deliverability"] == "deliverable_missing_secondary"
     end
 
     def verify_address

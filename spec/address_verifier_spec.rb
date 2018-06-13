@@ -66,21 +66,6 @@ RSpec.describe Heimdall::AddressVerifier do
             to include(/The address you entered was found/)
         end
       end
-
-      context "and deliverability status is deliverable_extra_secondary" do
-        it "populates the street2 attribute in the errors hash" do
-          FakeLob.return_partial_match(
-            deliverability_status: "deliverable_extra_secondary"
-          )
-          address = stub_address
-          verification_service = Heimdall::AddressVerifier.new(address)
-
-          verification_service.call
-
-          expect(address.errors[:street2]).
-            to include(/The address you entered was found/)
-        end
-      end
     end
 
     context "when the address is not found" do
