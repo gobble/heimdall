@@ -1,6 +1,12 @@
 module Heimdall
   class AddressVerifier
 
+    ERROR_MAPPINGS = {
+      deliverable_incorrect_unit: DeliverableIncorrectUnitError,
+      deliverable_missing_unit: DeliverableMissingUnitError,
+      undeliverable: UndeliverableAddressError
+    }
+
     delegate :line1, :city, :state, :zip_code, to: :address
 
     def initialize(address)
@@ -9,8 +15,9 @@ module Heimdall
 
     def call
       verify
-    rescue AddressError => e
+    rescue UndeliverableAddressError, UnverifiableAddressError => e
       add_error(e)
+      log_error(e)
       false
     end
 
@@ -48,31 +55,33 @@ module Heimdall
     end
 
     def handle_last_response
-      if missing_information?
-        fail Heimdall::MissingInformationError
-      elsif no_match_found?
-        fail Heimdall::UnverifiableAddressError
+      if has_error?
+        fail error_class
       else
         @success = true
       end
+    end
+
+    def has_error?
+      ERROR_MAPPINGS[deliverability_status].present?
+    end
+
+    def error_class
+      ERROR_MAPPINGS[deliverability_status]
+    end
+
+    def deliverability_status
+      last_response["deliverability"].to_sym
     end
 
     def commercial_address?
       last_response["components"]["address_type"] == "commercial"
     end
 
-    def no_match_found?
-      last_response["deliverability"] == "no_match"
-    end
-
-    def missing_information?
-      last_response["deliverability"] == "deliverable_missing_secondary"
-    end
-
     def verify_address
       response = verification_client.verify(address)
       unless response
-        fail Heimdall::UnverifiableAddressError
+        fail UnverifiableAddressError
       end
       response
     end
@@ -83,6 +92,11 @@ module Heimdall
 
     def add_error(error)
       address.errors[error.attribute] << error.message
+    end
+
+    def log_error(e)
+      Heimdall.log.error "Error occurred while verifying #{address}, " \
+                         "message: #{e.message}"
     end
 
   end

@@ -4,8 +4,8 @@ require "active_support/core_ext"
 
 require "heimdall/address"
 require "heimdall/address_validator"
-require "heimdall/address_verifier"
 require "heimdall/errors"
+require "heimdall/address_verifier"
 require "heimdall/utils/verification_client"
 require "heimdall/version"
 
