@@ -23,5 +23,9 @@ module Heimdall
     def for_comparison
       [line1, zip_code].compact.join(", ")
     end
+
+    def to_s
+      "#{line1}, #{line2}, #{city}, #{state} #{zip_code}"
+    end
   end
 end

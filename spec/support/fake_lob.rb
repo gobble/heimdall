@@ -11,7 +11,6 @@ class FakeLob
   def verify(options)
     initialize_class_variables
     return partial_match_response if @@partial_match
-    return address_not_found_response if @@address_not_found
     {
       "primary_line" => options[:primary_line],
       "secondary_line" => options[:secondary_line],
@@ -34,13 +33,12 @@ class FakeLob
     @@deliverability_status = deliverability_status
   end
 
-  def self.raise_address_not_found
-    @@address_not_found = true
+  def self.return_address_not_found
+    return_partial_match(deliverability_status: "undeliverable")
   end
 
   def self.clear
     @@partial_match = false
-    @@address_not_found = false
     @@deliverability_status = ""
   end
 
@@ -50,18 +48,8 @@ class FakeLob
     { "deliverability" => @@deliverability_status }
   end
 
-  def address_not_found_response
-    fail Lob::InvalidRequestError.new(
-      "error": {
-        "message" => "address not found",
-        "status_code" => 404,
-      }
-    )
-  end
-
   def initialize_class_variables
     @@partial_match ||= false
-    @@address_not_found ||= false
     @@address_type ||= "residential"
   end
 
