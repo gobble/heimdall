@@ -3,7 +3,8 @@ module Heimdall
     class VerificationClient
 
       def verify(address)
-        verify_address(address)
+        response = verify_address(address)
+        build_lob_response(response)
       rescue Lob::InvalidRequestError => e
         handle_error(e)
       end
@@ -18,6 +19,10 @@ module Heimdall
           state: address.state,
           zip_code: address.zip_code
         )
+      end
+
+      def build_lob_response(response)
+        LobResponse.build(response)
       end
 
       def lob_client
