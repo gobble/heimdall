@@ -22,4 +22,8 @@ class FakeAddress
     new(line1: "", city: "")
   end
 
+  def standardizer
+    @standardizer ||= Heimdall::AddressStandardizer.new(self)
+  end
+
 end
