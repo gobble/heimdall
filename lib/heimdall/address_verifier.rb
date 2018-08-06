@@ -4,6 +4,7 @@ module Heimdall
     ERROR_MAPPINGS = {
       deliverable_incorrect_unit: DeliverableIncorrectUnitError,
       deliverable_missing_unit: DeliverableMissingUnitError,
+      deliverable_unnecessary_unit: DeliverableUnnecessaryUnitError,
       undeliverable: UndeliverableAddressError,
     }.freeze
 

@@ -19,6 +19,15 @@ module Heimdall
     end
   end
 
+  class DeliverableUnnecessaryUnitError < AddressError
+    def message
+      <<~HEREDOC
+        The address you entered was found, but the apartment or suite number
+        is not necessary.
+      HEREDOC
+    end
+  end
+
   class UndeliverableAddressError < AddressError
     def message
       <<~HEREDOC
