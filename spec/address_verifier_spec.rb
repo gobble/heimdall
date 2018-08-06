@@ -37,6 +37,18 @@ RSpec.describe Heimdall::AddressVerifier do
       end
     end
 
+    context "when the address secondary unit is unnecessary" do
+      it "raises a DeliverableUnnecessaryUnitError" do
+        address = stub_address
+        stub_standardizer(address, "deliverable_unnecessary_unit")
+        verification_service = Heimdall::AddressVerifier.new(address)
+
+        expect {
+          verification_service.call
+        }.to raise_error(Heimdall::DeliverableUnnecessaryUnitError)
+      end
+    end
+
     context "when the address is not found" do
       it "populates the street1 attribute in the errors hash" do
         address = stub_address
