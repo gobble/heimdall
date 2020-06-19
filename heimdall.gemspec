@@ -38,5 +38,5 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency "activemodel"
   spec.add_runtime_dependency "activesupport"
-  spec.add_runtime_dependency "lob", "~> 4.1"
+  spec.add_runtime_dependency "lob", "~> 5.1"
 end
