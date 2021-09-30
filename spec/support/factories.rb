@@ -8,7 +8,8 @@ FactoryGirl.define do
     sequence(:zip) { |n| (90000 + n).to_s }
   end
 
-  factory :lob_response, class: Heimdall::Utils::LobResponse do
+  factory :verification_response,
+          class: Heimdall::Utils::VerificationResponse do
     primary_line "939 Industrial Ave"
     secondary_line "Apt. 1"
     deliverability "deliverable"
