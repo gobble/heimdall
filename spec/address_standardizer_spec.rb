@@ -15,9 +15,11 @@ RSpec.describe Heimdall::AddressStandardizer do
       expect(address).to have_received(:assign_attributes)
     end
 
-    context "when there is a lob request error" do
+    context "when there is a verification request error" do
       it "fails with UnverifiableAddressError" do
-        stub_verification_client(response: nil)
+        client = stub_verification_client
+        allow(client).to receive(:verify).
+          and_raise(RestClient::SSLCertificateNotVerified)
         address = build(:fake_address)
         standardizer = Heimdall::AddressStandardizer.new(address)
 
@@ -55,11 +57,11 @@ RSpec.describe Heimdall::AddressStandardizer do
       end
     end
 
-    def stub_verification_client(response:)
-      client = Heimdall::Utils::VerificationClient.new
-      allow(client).to receive(:verify).and_return(response)
-      allow(Heimdall::Utils::VerificationClient).
-        to receive(:new).and_return(client)
+    def stub_verification_client
+      client = Heimdall::Utils::AdapterFactory.build
+      allow(Heimdall::Utils::AdapterFactory).
+        to receive(:build).and_return(client)
+      client
     end
   end
 end

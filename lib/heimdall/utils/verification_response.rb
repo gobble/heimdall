@@ -1,7 +1,7 @@
 module Heimdall
   module Utils
 
-    class LobResponse
+    class VerificationResponse
 
       attr_accessor :primary_line, :secondary_line, :deliverability, :city,
                     :state, :zip_code, :address_type, :primary_number,
@@ -24,16 +24,16 @@ module Heimdall
       end
 
       class << self
-        def build(lob_response)
-          params = retrieve_params(lob_response.symbolize_keys)
+        def build(response)
+          params = retrieve_params(response.symbolize_keys)
           new(params)
         end
 
         private
 
-        def retrieve_params(lob_response)
-          components = lob_response.dig(:components)
-          lob_response.
+        def retrieve_params(response)
+          components = response.dig(:components)
+          response.
             slice(:primary_line, :secondary_line, :deliverability).
             merge(components.slice(*components_attributes))
         end
