@@ -31,6 +31,10 @@ Attr:
 BlockDelimiters:
   Enabled: false
 
+BlockLength:
+  Exclude:
+    - 'spec/**/*.rb'
+
 BlockNesting:
   Enabled: false
 
@@ -185,7 +189,7 @@ NumericLiterals:
 OneLineConditional:
   Enabled: false
 
-OpMethod:
+BinaryOperatorParameterName:
   Enabled: false
 
 ParameterLists:
@@ -237,7 +241,7 @@ TrailingCommaInArguments:
     - consistent_comma
     - no_comma
 
-TrailingCommaInLiteral:
+TrailingCommaInArrayLiteral:
   EnforcedStyleForMultiline: comma
   SupportedStyles:
     - comma
@@ -295,9 +299,6 @@ FormatParameterMismatch:
   Enabled: false
 
 HandleExceptions:
-  Enabled: false
-
-InvalidCharacterLiteral:
   Enabled: false
 
 InitialIndentation:
