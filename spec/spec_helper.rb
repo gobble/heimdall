@@ -1,7 +1,7 @@
 require "bundler/setup"
 require "heimdall"
 require "pry"
-require "factory_girl"
+require "factory_bot"
 
 Dir['./spec/support/**/*.rb'].each { |f| require f }
 
@@ -20,5 +20,5 @@ RSpec.configure do |config|
     stub_const("Lob::Client", FakeLob)
   end
 
-  config.include FactoryGirl::Syntax::Methods
+  config.include FactoryBot::Syntax::Methods
 end
