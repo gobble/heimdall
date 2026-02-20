@@ -15,7 +15,7 @@ RSpec.describe Heimdall::AddressVerifier do
 
     context "when the address secondary unit is incorrect" do
       it "raises a DeliverableIncorrectUnitError" do
-        address = stub_address
+        address = build(:fake_address)
         stub_standardizer(address, "deliverable_incorrect_unit")
         verification_service = Heimdall::AddressVerifier.new(address)
 
@@ -27,7 +27,7 @@ RSpec.describe Heimdall::AddressVerifier do
 
     context "when the address secondary unit is missing" do
       it "raises a DeliverableMissingUnitError" do
-        address = stub_address
+        address = build(:fake_address)
         stub_standardizer(address, "deliverable_missing_unit")
         verification_service = Heimdall::AddressVerifier.new(address)
 
@@ -39,7 +39,7 @@ RSpec.describe Heimdall::AddressVerifier do
 
     context "when the address secondary unit is unnecessary" do
       it "raises a DeliverableUnnecessaryUnitError" do
-        address = stub_address
+        address = build(:fake_address)
         stub_standardizer(address, "deliverable_unnecessary_unit")
         verification_service = Heimdall::AddressVerifier.new(address)
 
@@ -51,21 +51,15 @@ RSpec.describe Heimdall::AddressVerifier do
 
     context "when the address is not found" do
       it "populates the street1 attribute in the errors hash" do
-        address = stub_address
+        address = build(:fake_address)
         stub_standardizer(address, "undeliverable")
         verification_service = Heimdall::AddressVerifier.new(address)
 
         verification_service.call
 
-        expect(address.errors[:street1]).
+        expect(address.errors.messages[:street1]).
           to include(/The address cannot be found./)
       end
-    end
-
-    def stub_address
-      address = build(:fake_address)
-      allow(address).to receive(:errors).and_return(street1: [], street2: [])
-      address
     end
 
     def stub_standardizer(address, deliverability)

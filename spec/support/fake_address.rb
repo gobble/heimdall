@@ -1,4 +1,6 @@
 class FakeAddress
+  include ActiveModel::Validations
+
   attr_accessor :address, :street1, :street2, :city, :zip, :state,
                 :commercial, :verified
 
@@ -25,5 +27,4 @@ class FakeAddress
   def standardizer
     @standardizer ||= Heimdall::AddressStandardizer.new(self)
   end
-
 end

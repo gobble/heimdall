@@ -50,7 +50,7 @@ module Heimdall
     end
 
     def add_error(error)
-      address.errors[error.attribute] << error.message
+      address.errors.add(error.attribute, message: error.message)
     end
 
     def log_error(e)
