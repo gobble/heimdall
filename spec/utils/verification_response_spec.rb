@@ -26,6 +26,14 @@ RSpec.describe Heimdall::Utils::VerificationResponse do
 
       expect(result).to be_kind_of(Heimdall::Utils::VerificationResponse)
     end
+
+    it "assigns valid_address from the response" do
+      response = { valid_address: true, components: {} }
+
+      result = Heimdall::Utils::VerificationResponse.build(response)
+
+      expect(result.valid_address).to eq(true)
+    end
   end
 
   describe "#primary_field" do

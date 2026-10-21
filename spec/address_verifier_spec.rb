@@ -62,9 +62,49 @@ RSpec.describe Heimdall::AddressVerifier do
       end
     end
 
-    def stub_standardizer(address, deliverability)
+    context "when the deliverability is no_match" do
+      it "populates the street1 attribute in the errors hash" do
+        address = build(:fake_address)
+        stub_standardizer(address, "no_match")
+        verification_service = Heimdall::AddressVerifier.new(address)
+
+        verification_service.call
+
+        expect(address.errors.messages[:street1]).
+          to include(/The address cannot be found./)
+      end
+    end
+
+    context "when the address is not valid" do
+      it "populates the street1 attribute in the errors hash" do
+        address = build(:fake_address)
+        stub_standardizer(address, "deliverable", valid_address: false)
+        verification_service = Heimdall::AddressVerifier.new(address)
+
+        verification_service.call
+
+        expect(address.errors.messages[:street1]).
+          to include(/The address cannot be found./)
+      end
+    end
+
+    context "when valid_address is missing" do
+      it "populates the street1 attribute in the errors hash" do
+        address = build(:fake_address)
+        stub_standardizer(address, "deliverable", valid_address: nil)
+        verification_service = Heimdall::AddressVerifier.new(address)
+
+        verification_service.call
+
+        expect(address.errors.messages[:street1]).
+          to include(/The address cannot be found./)
+      end
+    end
+
+    def stub_standardizer(address, deliverability, valid_address: true)
       standardizer = Heimdall::AddressStandardizer.new(address)
       allow(standardizer).to receive(:deliverability).and_return(deliverability)
+      allow(standardizer).to receive(:valid_address).and_return(valid_address)
       allow(Heimdall::AddressStandardizer).to receive(:new).
         and_return(standardizer)
       standardizer
