@@ -3,56 +3,39 @@ module Heimdall
 
     class VerificationResponse
 
-      attr_accessor :primary_line, :secondary_line, :deliverability, :city,
-                    :state, :zip_code, :address_type, :primary_number,
-                    :street_predirection, :street_name, :street_suffix,
-                    :street_postdirection
+      DELIVERABLE = :deliverable
+      INCORRECT_UNIT = :incorrect_unit
+      MISSING_UNIT = :missing_unit
+      UNNECESSARY_UNIT = :unnecessary_unit
+      UNDELIVERABLE = :undeliverable
 
-      def initialize(params = {})
-        params.each { |attr, value| public_send("#{attr}=", value) }
+      DELIVERABILITY_STATUSES = [
+        DELIVERABLE, INCORRECT_UNIT, MISSING_UNIT, UNNECESSARY_UNIT,
+        UNDELIVERABLE
+      ].freeze
+
+      attr_reader :street1, :street2, :primary_field, :city, :state,
+                  :zip_code, :deliverability, :commercial
+
+      def initialize(deliverability:, street1: nil, street2: nil,
+                     primary_field: nil, city: nil, state: nil,
+                     zip_code: nil, commercial: false)
+        @deliverability = deliverability
+        @street1 = street1
+        @street2 = street2
+        @primary_field = primary_field
+        @city = city
+        @state = state
+        @zip_code = zip_code
+        @commercial = commercial
       end
 
       def commercial?
-        address_type == "commercial"
+        commercial
       end
 
-      def primary_field
-        primary_line_components.
-          map { |component| send(component).to_s }.
-          reject(&:empty?).
-          join(" ")
-      end
-
-      class << self
-        def build(response)
-          params = retrieve_params(response.symbolize_keys)
-          new(params)
-        end
-
-        private
-
-        def retrieve_params(response)
-          components = response.dig(:components)
-          response.
-            slice(:primary_line, :secondary_line, :deliverability).
-            merge(components.slice(*components_attributes))
-        end
-
-        def components_attributes
-          %w(
-            city state zip_code address_type primary_number street_predirection
-            street_name street_suffix street_postdirection
-          )
-        end
-      end
-
-      private
-
-      def primary_line_components
-        %w(
-          primary_number street_predirection street_name street_suffix
-          street_postdirection
-        )
+      def deliverable?
+        deliverability == DELIVERABLE
       end
 
     end

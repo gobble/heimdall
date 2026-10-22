@@ -1,6 +1,7 @@
 module Heimdall
   class AddressStandardizer
-    delegate :primary_field, :deliverability, to: :verification_response
+    delegate :primary_field, :deliverability, :deliverable?,
+             to: :verification_response
 
     def initialize(address)
       @address = address
@@ -8,8 +9,6 @@ module Heimdall
 
     def standardize
       standardize_address
-    rescue StandardError => e
-      handle_error(e)
     end
 
     private
@@ -18,6 +17,8 @@ module Heimdall
 
     def verification_response
       @verification_response ||= verify_address
+    rescue StandardError => e
+      handle_error(e)
     end
 
     def verification_client
@@ -30,8 +31,8 @@ module Heimdall
 
     def standardize_address
       address.assign_attributes(
-        street1: verification_response.primary_line,
-        street2: verification_response.secondary_line,
+        street1: verification_response.street1,
+        street2: verification_response.street2,
         city: verification_response.city,
         state: verification_response.state,
         zip_code: verification_response.zip_code,
