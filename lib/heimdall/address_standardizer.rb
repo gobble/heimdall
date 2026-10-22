@@ -1,6 +1,7 @@
 module Heimdall
   class AddressStandardizer
-    delegate :primary_field, :deliverability, to: :verification_response
+    delegate :primary_field, :deliverability, :valid_address,
+             to: :verification_response
 
     def initialize(address)
       @address = address

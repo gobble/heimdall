@@ -57,6 +57,27 @@ RSpec.describe Heimdall::AddressStandardizer do
       end
     end
 
+    describe "#valid_address" do
+      it "returns valid_address from the verification response" do
+        address = build(:fake_address)
+        standardizer = Heimdall::AddressStandardizer.new(address)
+
+        expect(standardizer.valid_address).to eq(true)
+      end
+
+      context "when the address is not valid" do
+        it "returns false" do
+          client = stub_verification_client
+          allow(client).to receive(:verify).
+            and_return(build(:verification_response, valid_address: false))
+          address = build(:fake_address)
+          standardizer = Heimdall::AddressStandardizer.new(address)
+
+          expect(standardizer.valid_address).to eq(false)
+        end
+      end
+    end
+
     def stub_verification_client
       client = Heimdall::Utils::AdapterFactory.build
       allow(Heimdall::Utils::AdapterFactory).

@@ -6,7 +6,7 @@ module Heimdall
       attr_accessor :primary_line, :secondary_line, :deliverability, :city,
                     :state, :zip_code, :address_type, :primary_number,
                     :street_predirection, :street_name, :street_suffix,
-                    :street_postdirection
+                    :street_postdirection, :valid_address
 
       def initialize(params = {})
         params.each { |attr, value| public_send("#{attr}=", value) }
@@ -34,7 +34,9 @@ module Heimdall
         def retrieve_params(response)
           components = response.dig(:components)
           response.
-            slice(:primary_line, :secondary_line, :deliverability).
+            slice(
+              :primary_line, :secondary_line, :deliverability, :valid_address
+            ).
             merge(components.slice(*components_attributes))
         end
 

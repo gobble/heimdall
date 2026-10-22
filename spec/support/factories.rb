@@ -13,6 +13,7 @@ FactoryBot.define do
     primary_line { "939 Industrial Ave" }
     secondary_line { "Apt. 1" }
     deliverability { "deliverable" }
+    valid_address { true }
     city { "Palo Alto" }
     state { "CA" }
     zip_code { 94303 }

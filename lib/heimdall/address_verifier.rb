@@ -6,6 +6,7 @@ module Heimdall
       deliverable_missing_unit: DeliverableMissingUnitError,
       deliverable_unnecessary_unit: DeliverableUnnecessaryUnitError,
       undeliverable: UndeliverableAddressError,
+      no_match: UndeliverableAddressError
     }.freeze
 
     delegate :line1, :city, :state, :zip_code, to: :address
@@ -15,7 +16,7 @@ module Heimdall
     end
 
     def call
-      verify_address
+      verify_address!
     rescue UndeliverableAddressError, UnverifiableAddressError => e
       add_error(e)
       log_error(e)
@@ -29,7 +30,8 @@ module Heimdall
       address.standardizer
     end
 
-    def verify_address
+    def verify_address!
+      verify_address_is_valid!
       if has_error?
         fail error_class
       else
@@ -37,12 +39,21 @@ module Heimdall
       end
     end
 
+    def verify_address_is_valid!
+      return if valid_address?
+      fail UndeliverableAddressError
+    end
+
     def has_error?
-      ERROR_MAPPINGS[deliverability_status].present?
+      error_class.present?
     end
 
     def error_class
       ERROR_MAPPINGS[deliverability_status]
+    end
+
+    def valid_address?
+      address_standardizer.valid_address
     end
 
     def deliverability_status

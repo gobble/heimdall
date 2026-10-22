@@ -15,6 +15,7 @@ class FakeLob
       "primary_line" => options[:primary_line],
       "secondary_line" => options[:secondary_line],
       "deliverability" => "deliverable",
+      "valid_address" => true,
       "components" => {
         "city" => options[:city],
         "state" => options[:state],
