@@ -10,17 +10,15 @@ FactoryBot.define do
 
   factory :verification_response,
           class: Heimdall::Utils::VerificationResponse do
-    primary_line { "939 Industrial Ave" }
-    secondary_line { "Apt. 1" }
-    deliverability { "deliverable" }
+    street1 { "939 Industrial Ave" }
+    street2 { "Apt. 1" }
+    primary_field { "939 Industrial Ave" }
     city { "Palo Alto" }
     state { "CA" }
-    zip_code { 94303 }
-    address_type { "commercial" }
-    primary_number { "939" }
-    street_predirection { "N" }
-    street_name { "Industrial" }
-    street_suffix { "Ave" }
-    street_postdirection { "W" }
+    zip_code { "94303" }
+    deliverability_status { :deliverable }
+    commercial { true }
+
+    initialize_with { new(**attributes) }
   end
 end
