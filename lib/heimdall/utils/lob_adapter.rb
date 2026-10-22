@@ -8,7 +8,7 @@ module Heimdall
         deliverable_incorrect_unit: VerificationResponse::INCORRECT_UNIT,
         deliverable_missing_unit: VerificationResponse::MISSING_UNIT,
         deliverable_unnecessary_unit: VerificationResponse::UNNECESSARY_UNIT,
-        undeliverable: DEFAULT_DELIVERABILITY,
+        undeliverable: DEFAULT_DELIVERABILITY
       }.freeze
 
       COMMERCIAL_ADDRESS_TYPE = "commercial".freeze

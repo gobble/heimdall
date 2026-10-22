@@ -7,7 +7,7 @@ module Heimdall
       STATUSES::INCORRECT_UNIT => DeliverableIncorrectUnitError,
       STATUSES::MISSING_UNIT => DeliverableMissingUnitError,
       STATUSES::UNNECESSARY_UNIT => DeliverableUnnecessaryUnitError,
-      STATUSES::UNDELIVERABLE => UndeliverableAddressError,
+      STATUSES::UNDELIVERABLE => UndeliverableAddressError
     }.freeze
 
     delegate :line1, :city, :state, :zip_code, to: :address
