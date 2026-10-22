@@ -53,7 +53,7 @@ module Heimdall
     end
 
     def deliverability_status
-      address_standardizer.deliverability
+      address_standardizer.deliverability_status
     end
 
     def add_error(error)

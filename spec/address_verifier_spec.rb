@@ -125,7 +125,8 @@ RSpec.describe Heimdall::AddressVerifier do
 
     def stub_standardizer(address, deliverability)
       standardizer = Heimdall::AddressStandardizer.new(address)
-      allow(standardizer).to receive(:deliverability).and_return(deliverability)
+      allow(standardizer).to receive(:deliverability_status).
+        and_return(deliverability)
       allow(standardizer).to receive(:deliverable?).
         and_return(deliverability == :deliverable)
       allow(Heimdall::AddressStandardizer).to receive(:new).

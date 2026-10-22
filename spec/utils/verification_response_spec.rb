@@ -10,7 +10,7 @@ RSpec.describe Heimdall::Utils::VerificationResponse do
         city: "Palo Alto",
         state: "CA",
         zip_code: "94303",
-        deliverability: :deliverable
+        deliverability_status: :deliverable
       )
 
       expect(response).to have_attributes(
@@ -20,11 +20,11 @@ RSpec.describe Heimdall::Utils::VerificationResponse do
         city: "Palo Alto",
         state: "CA",
         zip_code: "94303",
-        deliverability: :deliverable
+        deliverability_status: :deliverable
       )
     end
 
-    it "requires a deliverability" do
+    it "requires a deliverability_status" do
       expect {
         Heimdall::Utils::VerificationResponse.new(street1: "939 Industrial Ave")
       }.to raise_error(ArgumentError)
@@ -52,7 +52,7 @@ RSpec.describe Heimdall::Utils::VerificationResponse do
   describe "#deliverable?" do
     context "when the address is deliverable" do
       it "is deliverable" do
-        response = build(:verification_response, deliverability: :deliverable)
+        response = build(:verification_response, deliverability_status: :deliverable)
 
         expect(response).to be_deliverable
       end
@@ -60,7 +60,7 @@ RSpec.describe Heimdall::Utils::VerificationResponse do
 
     context "when the address is not deliverable" do
       it "is not deliverable" do
-        response = build(:verification_response, deliverability: :missing_unit)
+        response = build(:verification_response, deliverability_status: :missing_unit)
 
         expect(response).to_not be_deliverable
       end

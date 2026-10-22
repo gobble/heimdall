@@ -16,7 +16,7 @@ FactoryBot.define do
     city { "Palo Alto" }
     state { "CA" }
     zip_code { "94303" }
-    deliverability { :deliverable }
+    deliverability_status { :deliverable }
     commercial { true }
 
     initialize_with { new(**attributes) }

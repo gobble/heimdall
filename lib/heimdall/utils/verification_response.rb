@@ -15,12 +15,12 @@ module Heimdall
       ].freeze
 
       attr_reader :street1, :street2, :primary_field, :city, :state,
-                  :zip_code, :deliverability, :commercial
+                  :zip_code, :deliverability_status, :commercial
 
-      def initialize(deliverability:, street1: nil, street2: nil,
+      def initialize(deliverability_status:, street1: nil, street2: nil,
                      primary_field: nil, city: nil, state: nil,
                      zip_code: nil, commercial: false)
-        @deliverability = deliverability
+        @deliverability_status = deliverability_status
         @street1 = street1
         @street2 = street2
         @primary_field = primary_field
@@ -35,7 +35,7 @@ module Heimdall
       end
 
       def deliverable?
-        deliverability == DELIVERABLE
+        deliverability_status == DELIVERABLE
       end
 
     end

@@ -54,7 +54,7 @@ module Heimdall
           city: components[:city],
           state: components[:state],
           zip_code: components[:zip_code],
-          deliverability: build_deliverability(response[:deliverability]),
+          deliverability_status: build_deliverability(response[:deliverability]),
           commercial: components[:address_type] == COMMERCIAL_ADDRESS_TYPE
         )
       end

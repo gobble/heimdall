@@ -4,14 +4,14 @@ RSpec.describe Heimdall::AddressStandardizer do
 
   before { FakeLob.clear }
 
-  describe "#deliverability" do
+  describe "#deliverability_status" do
     it "returns the generic deliverability status as a symbol" do
       FakeLob.return_partial_match(
         deliverability_status: "deliverable_missing_unit"
       )
       standardizer = Heimdall::AddressStandardizer.new(build(:fake_address))
 
-      result = standardizer.deliverability
+      result = standardizer.deliverability_status
 
       expect(result).to eq(:missing_unit)
     end
@@ -24,7 +24,7 @@ RSpec.describe Heimdall::AddressStandardizer do
         standardizer = Heimdall::AddressStandardizer.new(build(:fake_address))
 
         expect {
-          standardizer.deliverability
+          standardizer.deliverability_status
         }.to raise_error(Heimdall::UnverifiableAddressError)
       end
     end

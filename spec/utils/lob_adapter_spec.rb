@@ -51,7 +51,7 @@ RSpec.describe Heimdall::Utils::LobAdapter do
         city: "Palo Alto",
         state: "CA",
         zip_code: "94303",
-        deliverability: Heimdall::Utils::VerificationResponse::DELIVERABLE
+        deliverability_status: Heimdall::Utils::VerificationResponse::DELIVERABLE
       )
     end
 
@@ -77,7 +77,7 @@ RSpec.describe Heimdall::Utils::LobAdapter do
 
         result = adapter.verify(build(:fake_address))
 
-        expect(result.deliverability).
+        expect(result.deliverability_status).
           to eq(Heimdall::Utils::VerificationResponse::MISSING_UNIT)
       end
     end
@@ -90,7 +90,7 @@ RSpec.describe Heimdall::Utils::LobAdapter do
 
         result = adapter.verify(build(:fake_address))
 
-        expect(result.deliverability).
+        expect(result.deliverability_status).
           to eq(Heimdall::Utils::VerificationResponse::UNDELIVERABLE)
       end
     end
@@ -140,7 +140,7 @@ RSpec.describe Heimdall::Utils::LobAdapter do
         result = adapter.verify(build(:fake_address))
 
         expect(result).to have_attributes(
-          deliverability: Heimdall::Utils::VerificationResponse::UNDELIVERABLE,
+          deliverability_status: Heimdall::Utils::VerificationResponse::UNDELIVERABLE,
           zip_code: nil,
           primary_field: "",
           commercial: false
